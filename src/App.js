@@ -15,6 +15,17 @@ export default class App extends Component {
   render() {
     return (
       <div>
+        <Route
+          path="/palette/:paletteId/:colorId"
+          render={routeProps => (
+            <SingleColorPalette
+              colorId={routeProps.match.params.colorId}
+              palette={generatePalette(
+                this.findPalette(routeProps.match.params.paletteId)
+              )}
+            />
+          )}
+        />
         <Switch>
           <Route
             exact
@@ -33,10 +44,6 @@ export default class App extends Component {
                 )}
               />
             )}
-          />
-          <Route
-            path="/palette/:paletteId/:colorId"
-            render={() => <SingleColorPalette />}
           />
         </Switch>
       </div>

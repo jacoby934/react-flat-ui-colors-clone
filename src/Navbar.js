@@ -10,44 +10,42 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./Navbar.css";
 
-export default class Navbar extends Component {
+class Navbar extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      format: "hex",
-      open: false
-    };
+    this.state = { format: "hex", open: false };
     this.handleFormatChange = this.handleFormatChange.bind(this);
     this.closeSnackbar = this.closeSnackbar.bind(this);
   }
   handleFormatChange(e) {
-    this.setState({ format: e.target.value, open: "true" });
+    this.setState({ format: e.target.value, open: true });
     this.props.handleChange(e.target.value);
   }
-
   closeSnackbar() {
     this.setState({ open: false });
   }
   render() {
-    const { level, changeLevel } = this.props;
+    const { level, changeLevel, showingAllColors } = this.props;
     const { format } = this.state;
     return (
       <header className="Navbar">
         <div className="logo">
           <Link to="/">reactcolorpicker</Link>
         </div>
-        <div className="slider-container">
-          <span>Level: {level}</span>
-          <div className="slider">
-            <Slider
-              defaultValue={level}
-              min={100}
-              max={900}
-              step={100}
-              onAfterChange={changeLevel}
-            />
+        {showingAllColors && (
+          <div className="slider-container">
+            <span>Level: {level}</span>
+            <div className="slider">
+              <Slider
+                defaultValue={level}
+                min={100}
+                max={900}
+                step={100}
+                onAfterChange={changeLevel}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <div className="select-container">
           <Select value={format} onChange={this.handleFormatChange}>
             <MenuItem value="hex">HEX - #ffffff</MenuItem>
@@ -61,10 +59,12 @@ export default class Navbar extends Component {
           autoHideDuration={3000}
           message={
             <span id="message-id">
-              Format Changed to {format.toUpperCase()}
+              Format Changed To {format.toUpperCase()}
             </span>
           }
-          ContentProps={{ "aria-describedby": "message-id" }}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
           onClose={this.closeSnackbar}
           action={[
             <IconButton
@@ -81,3 +81,4 @@ export default class Navbar extends Component {
     );
   }
 }
+export default Navbar;
